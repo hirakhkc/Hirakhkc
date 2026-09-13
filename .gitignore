@@ -2,15 +2,17 @@
 android/.gradle/
 android/local.properties
 android/**/build/
+*.jks
+*.keystore
 
-# Windows / Node
+# Windows / Electron
 windows/node_modules/
 windows/release/
-windows/dist/
+*.log
 
-# Editors and operating systems
-.idea/
-.vscode/
-*.iml
+# OS / editor
 .DS_Store
 Thumbs.db
+.idea/
+*.iml
+

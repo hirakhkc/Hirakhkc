@@ -1,0 +1,45 @@
+name: Build Windows Offline EXE
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "windows/**"
+      - ".github/workflows/build-windows.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-exe:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: windows
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        shell: pwsh
+        run: npm install --no-audit --no-fund
+
+      - name: Build offline Windows installer
+        shell: pwsh
+        run: npm run dist
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hirak-Jyotish-Chakra-Windows-v3.2.0-EXE
+          path: windows/release/Hirak_Jyotish_Chakra_Windows_Setup_v3.2.0.exe
+          if-no-files-found: error
+          retention-days: 90
