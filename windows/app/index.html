@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#5b1a16" />
+  <title>Hirak Jyotish Chakra</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="softwareShell">
+  <header class="topbar">
+    <div class="brand"><img class="brand-icon" src="hirak-jyotish-icon.png" alt="Hirak Jyotish Chakra icon"><div><b>Hirak Jyotish Chakra</b><small>Vedic Kundali &amp; Guidance · Hirak Chatterjee</small></div><span class="paid-badge demo-badge">DEMO VERSION</span></div>
+    <nav><button id="newBtn">New</button><button id="sampleBtn">My Details</button><button id="updateBtn">Check for Updates</button><button id="printBtn">Print / PDF</button></nav>
+  </header>
+
+  <main>
+    <aside class="input-panel">
+      <div class="panel-title"><span>Birth Information</span><small>All times are local</small></div>
+      <form id="birthForm">
+        <label>Name<input id="name" required value="HIRAK CHATTERJEE" /></label>
+        <div class="two"><label>Sex<select id="sex"><option>Male</option><option>Female</option><option>Other</option></select></label>
+          <label>Language<select id="language"><option value="English">English</option><option value="Hindi">हिन्दी</option><option value="Bengali">বাংলা</option></select></label></div>
+        <label>Date of Birth<input id="dob" type="date" required value="1968-12-16" /></label>
+        <label>Time of Birth<input id="tob" type="time" step="1" required value="05:55:02" /></label>
+        <label>Country / Region<input id="country" list="countryList" value="India" autocomplete="off" /><datalist id="countryList"><option>India</option><option>Russia</option><option>Bangladesh</option><option>Nepal</option><option>Bhutan</option><option>Sri Lanka</option><option>United Kingdom</option><option>United States</option><option>Canada</option><option>Australia</option></datalist></label>
+        <label class="place-field">Birth Place
+          <input id="place" autocomplete="off" required value="Ahamadpur, Birbhum, West Bengal" />
+          <div id="placeHints" class="place-hints" hidden></div>
+          <small id="placeStatus">Type at least 3 letters for worldwide suggestions</small>
+        </label>
+        <div class="two"><label>Latitude<input id="lat" type="number" step="0.0001" value="23.8333" /></label>
+          <label>Longitude<input id="lon" type="number" step="0.0001" value="87.7000" /></label></div>
+        <button id="savePlaceBtn" class="secondary-action" type="button">＋ Add / Save This Place</button>
+        <small id="savedPlaceStatus" class="saved-place-status">If a birthplace is missing, enter its name, latitude, longitude and UTC offset, then save it.</small>
+        <div class="two"><label>UTC Time-Zone Offset<input id="timezone" type="number" min="-12" max="14" step="0.25" value="5.5" /><small id="timezoneName">Asia/Kolkata</small></label>
+          <label>Ayanamsa<select id="ayanamsa"><option value="lahiri">N.C. Lahiri</option></select></label></div>
+        <fieldset class="residence-panel">
+          <legend>Current Residence for Predictions</legend>
+          <label>Current Country / Region<input id="currentCountry" list="countryList" value="India" autocomplete="off" /></label>
+          <label class="place-field">Where Living Now
+            <input id="currentPlace" autocomplete="off" placeholder="Type at least 3 letters" />
+            <div id="currentPlaceHints" class="place-hints" hidden></div>
+            <small id="currentPlaceStatus">If blank, birth place will be used for predictions</small>
+          </label>
+          <div class="two"><label>Current Latitude<input id="currentLat" type="number" step="0.0001" /></label>
+            <label>Current Longitude<input id="currentLon" type="number" step="0.0001" /></label></div>
+          <label>Current UTC Offset<input id="currentTimezone" type="number" min="-12" max="14" step="0.25" /><small id="currentTimezoneName">Residence time zone</small></label>
+          <button id="sameAsBirthBtn" class="secondary-action" type="button">Use Birth Place as Current Residence</button>
+        </fieldset>
+        <label>Forecast From<input id="forecastStart" type="date" /></label>
+        <button class="generate" type="submit">Generate Kundali <span>→</span></button>
+      </form>
+      <div class="accuracy"><b>Calculation standard</b><span>Sidereal zodiac · Lahiri ayanamsa · True node · North Indian charts</span></div>
+    </aside>
+
+    <section class="workspace">
+      <div class="welcome" id="welcome">
+        <img class="welcome-icon" src="hirak-jyotish-icon.png" alt="Jyotish Chakra"><h1>Hirak Jyotish Chakra</h1>
+        <p>Enter the birth details and select Generate Kundali. The report is arranged for on-screen study and clean PDF printing.</p>
+        <p class="play-disclaimer">Astrological content is provided for personal guidance and entertainment. It is not medical, legal or financial advice and does not guarantee outcomes.</p>
+      </div>
+      <div id="report" hidden>
+        <div class="report-head"><div><p class="eyebrow">Vedic Horoscope</p><h1 id="reportName"></h1><p id="reportMeta"></p></div>
+          <div class="summary-pills"><span id="lagnaPill"></span><span id="rashiPill"></span><span id="nakPill"></span></div></div>
+        <div class="tabs" id="tabs"></div>
+        <div id="pages"></div>
+      </div>
+    </section>
+  </main>
+  <footer><b>Created &amp; Directed by Hirak Chatterjee</b><span>Phone: 9830431246 · WhatsApp: 9830961246 · Email: hirakhkc@gmail.com</span><strong class="footer-paid demo-badge">DEMO VERSION</strong></footer>
+  </div>
+  <script src="license.js"></script>
+  <script src="android-config.js"></script>
+  <script src="activation.js"></script>
+  <script src="app.js"></script>
+  <script src="i18n.js"></script>
+</body>
+</html>
