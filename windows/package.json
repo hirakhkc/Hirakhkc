@@ -1,0 +1,32 @@
+{
+  "name": "hirak-jyotish-chakra",
+  "version": "3.2.0",
+  "description": "Hirak Jyotish Chakra for Windows 10 and later",
+  "author": "Hirak Chatterjee",
+  "main": "main.js",
+  "scripts": {
+    "dist": "electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "electron": "44.3.0",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "in.hirakchatterjee.hirakjyotishchakra",
+    "productName": "Hirak Jyotish Chakra",
+    "asar": true,
+    "files": ["main.js", "app/**/*", "build/icon.png"],
+    "win": {
+      "target": [{"target": "nsis", "arch": ["x64"]}],
+      "signAndEditExecutable": false,
+      "artifactName": "Hirak_Jyotish_Chakra_Windows_Setup_v3.2.0.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Hirak Jyotish Chakra"
+    }
+  }
+}
