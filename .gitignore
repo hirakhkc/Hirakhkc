@@ -8,6 +8,7 @@ android/**/build/
 # Windows / Electron
 windows/node_modules/
 windows/release/
+windows/dist/
 *.log
 
 # OS / editor
@@ -15,4 +16,3 @@ windows/release/
 Thumbs.db
 .idea/
 *.iml
-

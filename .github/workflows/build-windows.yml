@@ -40,6 +40,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Hirak-Jyotish-Chakra-Windows-v3.2.0-EXE
-          path: windows/release/Hirak_Jyotish_Chakra_Windows_Setup_v3.2.0.exe
+          path: windows/dist/Hirak_Jyotish_Chakra_Windows_Setup_v3.2.0.exe
           if-no-files-found: error
           retention-days: 90
