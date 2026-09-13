@@ -1,0 +1,16 @@
+# Android
+android/.gradle/
+android/local.properties
+android/**/build/
+
+# Windows / Node
+windows/node_modules/
+windows/release/
+windows/dist/
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
