@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "ios/**"
+      - ".github/workflows/build-ios.yml"
 
 jobs:
   simulator-build:
