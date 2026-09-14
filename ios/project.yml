@@ -1,0 +1,40 @@
+name: HirakJyotishChakra
+options:
+  bundleIdPrefix: com.hirakchatterjee
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+targets:
+  HirakJyotishChakra:
+    type: application
+    platform: iOS
+    sources:
+      - path: HirakJyotishChakra
+        excludes:
+          - Web
+    resources:
+      - path: HirakJyotishChakra/Web
+      - path: HirakJyotishChakra/Assets.xcassets
+    info:
+      path: HirakJyotishChakra/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.hirakchatterjee.jyotishchakra
+        PRODUCT_NAME: Hirak Jyotish Chakra
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: NO
+schemes:
+  HirakJyotishChakra:
+    build:
+      targets:
+        HirakJyotishChakra: all
+    run:
+      config: Debug
+    archive:
+      config: Release
