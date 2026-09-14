@@ -1,0 +1,74 @@
+name: Publish v3.3.0 Installers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-v3.3.0.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - run: gradle --no-daemon clean assembleDebug
+      - run: cp app/build/outputs/apk/debug/app-debug.apk ../Hirak_Jyotish_Chakra_Android_v3.3.0.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-installer
+          path: Hirak_Jyotish_Chakra_Android_v3.3.0.apk
+
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: windows
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --no-audit --no-fund
+      - run: npm run dist
+      - shell: pwsh
+        run: Copy-Item "dist/Hirak_Jyotish_Chakra_Windows_Setup_v3.2.0.exe" "../Hirak_Jyotish_Chakra_Windows_Setup_v3.3.0.exe"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: Hirak_Jyotish_Chakra_Windows_Setup_v3.3.0.exe
+
+  release:
+    needs: [android, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: release
+      - name: Create iPhone installation link
+        run: |
+          cat > release/Hirak_Jyotish_Chakra_iPhone_iPad_Install.html <<'EOF'
+          <!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Install Hirak Jyotish Chakra</title><meta http-equiv="refresh" content="0;url=https://hirak-jyotish-chakra.hkc627671.chatgpt.site"><p>Open <a href="https://hirak-jyotish-chakra.hkc627671.chatgpt.site">Hirak Jyotish Chakra</a> in Safari, tap Share, then Add to Home Screen.</p>
+          EOF
+      - name: Publish installers
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete v3.3.0 --yes --cleanup-tag || true
+          gh release create v3.3.0 release/* --repo "${{ github.repository }}" --title "Hirak Jyotish Chakra v3.3.0" --notes "Android APK, Windows 10/11 offline installer, and iPhone/iPad web-app installation link."
