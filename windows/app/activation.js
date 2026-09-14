@@ -5,7 +5,7 @@
   function isActivated(){return nativeActivated()||localStorage.getItem(ACTIVATED_KEY)==='yes'}
   function rememberActivation(){try{if(window.AndroidLicense)window.AndroidLicense.setActivated()}catch(_){}localStorage.setItem(ACTIVATED_KEY,'yes')}
   function installMonth(){const m=Number(window.KUNDALI_INSTALL_MONTH);return Number.isInteger(m)&&m>=1&&m<=12?m:new Date().getMonth()+1}
-  function expectedPassword(){const m=installMonth();return `Jgrmg${67+m}@#$%${String(m).padStart(4,'0')}000`}
+  function expectedPassword(){const d=new Date(),yyyy=d.getFullYear(),mm=String(d.getMonth()+1).padStart(2,'0');return `Jgrmg${yyyy}${mm}@#$%&&`}
   function showMessage(message,error){const box=document.getElementById('activationMessage');if(!box)return;box.textContent=message;box.classList.toggle('error',!!error)}
   function setEdition(paid){document.querySelectorAll('.paid-badge,.footer-paid').forEach(b=>{b.textContent=paid?'PAID VERSION':'DEMO VERSION';b.classList.toggle('demo-badge',!paid)});const old=document.getElementById('activationBar');if(old)old.remove();if(!paid)createActivationBar()}
   function createActivationBar(){
