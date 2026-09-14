@@ -7,7 +7,7 @@
   function installMonth(){const m=Number(window.KUNDALI_INSTALL_MONTH);return Number.isInteger(m)&&m>=1&&m<=12?m:new Date().getMonth()+1}
   function expectedPassword(){const d=new Date(),yyyy=d.getFullYear(),mm=String(d.getMonth()+1).padStart(2,'0');return `Jgrmg${yyyy}${mm}@#$%&&`}
   function showMessage(message,error){const box=document.getElementById('activationMessage');if(!box)return;box.textContent=message;box.classList.toggle('error',!!error)}
-  function setEdition(paid){document.querySelectorAll('.paid-badge,.footer-paid').forEach(b=>{b.textContent=paid?'PAID VERSION':'DEMO VERSION';b.classList.toggle('demo-badge',!paid)});const old=document.getElementById('activationBar');if(old)old.remove();if(!paid)createActivationBar()}
+  function setEdition(paid){document.querySelectorAll('.paid-badge,.footer-paid').forEach(b=>{b.textContent=paid?'PAID VERSION':'DEMO VERSION';b.classList.toggle('demo-badge',!paid)});const old=document.getElementById('activationBar');if(old)old.remove();if(!paid){const oldBar=document.getElementById('activationBar');if(oldBar)oldBar.remove()}}
   function createActivationBar(){
     if(document.getElementById('activationBar'))return;const header=document.querySelector('.topbar');if(!header)return;
     const bar=document.createElement('section');bar.id='activationBar';bar.className='activation-bar';
@@ -17,6 +17,6 @@
     document.getElementById('activationPassword').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();document.getElementById('activateApp').click()}};
   }
   function requestPaidVersion(){if(isActivated())return true;createActivationBar();showMessage('To create a new prediction, pay ₹999 to hirakhkc@upi, send proof to WhatsApp 9830431246, then enter the password above.',true);const bar=document.getElementById('activationBar'),input=document.getElementById('activationPassword');if(bar)bar.scrollIntoView({behavior:'smooth',block:'start'});if(input)setTimeout(()=>input.focus(),350);return false}
-  window.HirakLicense={isPaid:isActivated,requestPaidVersion,authorizeGeneration:function(){if(isActivated())return true;if(localStorage.getItem(FREE_USED_KEY)!=='yes'){localStorage.setItem(FREE_USED_KEY,'yes');showMessage('Your one free horoscope has now been used. Activate before creating another report.',false);return true}showMessage('Demo limit reached. Enter the activation password above to create the second horoscope.',true);const input=document.getElementById('activationPassword');if(input){input.scrollIntoView({behavior:'smooth',block:'center'});input.focus()}return false}};
+  window.HirakLicense={isPaid:isActivated,requestPaidVersion,authorizeGeneration:function(){if(isActivated())return true;if(localStorage.getItem(FREE_USED_KEY)!=='yes'){localStorage.setItem(FREE_USED_KEY,'yes');showMessage('Your one free horoscope has now been used. Activate before creating another report.',false);return true}return requestPaidVersion()}};
   document.addEventListener('DOMContentLoaded',()=>{window.HIRAK_ACTIVATED=isActivated();setEdition(window.HIRAK_ACTIVATED)});
 })();
