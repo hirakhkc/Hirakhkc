@@ -1,0 +1,59 @@
+name: iOS Build Check
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "ios/**"
+      - ".github/workflows/build-ios.yml"
+  push:
+    paths:
+      - "ios/**"
+      - ".github/workflows/build-ios.yml"
+
+jobs:
+  simulator-build:
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reuse the verified v3.2.0 web application
+        run: |
+          if [ -d ../android/app/src/main/assets/web ]; then
+            mkdir -p HirakJyotishChakra/Web
+            cp -R ../android/app/src/main/assets/web/. HirakJyotishChakra/Web/
+          fi
+          test -f HirakJyotishChakra/Web/index.html
+      - name: Prepare Apple icon sizes
+        run: |
+          SOURCE="HirakJyotishChakra/Web/hirak-jyotish-icon.png"
+          DEST="HirakJyotishChakra/Assets.xcassets/AppIcon.appiconset"
+          mkdir -p "$DEST"
+          for SIZE in 20 29 40 58 60 76 80 87 120 152 167 180 1024; do
+            sips -z "$SIZE" "$SIZE" "$SOURCE" --out "$DEST/icon-$SIZE.png" >/dev/null
+          done
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Build for iPhone Simulator
+        run: >-
+          xcodebuild
+          -project HirakJyotishChakra.xcodeproj
+          -scheme HirakJyotishChakra
+          -configuration Release
+          -sdk iphonesimulator
+          -destination 'generic/platform=iOS Simulator'
+          CODE_SIGNING_ALLOWED=NO
+          clean build
+      - name: Package simulator build
+        run: |
+          APP_PATH="$(find "$HOME/Library/Developer/Xcode/DerivedData" -path '*Release-iphonesimulator/Hirak Jyotish Chakra.app' -print -quit)"
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" Hirak_Jyotish_Chakra_iOS_Simulator_v3.2.0.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Hirak-Jyotish-Chakra-iOS-Simulator-v3.2.0
+          path: ios/Hirak_Jyotish_Chakra_iOS_Simulator_v3.2.0.zip
+          if-no-files-found: error
