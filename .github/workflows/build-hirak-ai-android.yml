@@ -59,7 +59,7 @@ jobs:
         working-directory: HIRAK-AI/build-source/hirak-ai/android
         run: |
           gradle --no-daemon clean assembleDebug
-          cp app/build/outputs/apk/debug/app-debug.apk ../../../../../HIRAK_AI_Android_v1.0.0.apk
+          cp app/build/outputs/apk/debug/app-debug.apk ../../../../HIRAK_AI_Android_v1.0.0.apk
 
       - name: Verify APK
         shell: bash
@@ -81,6 +81,4 @@ jobs:
       - name: Publish downloadable GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release delete hirak-ai-v1.0.0 --yes --cleanup-tag || true
-          gh release create hirak-ai-v1.0.0             HIRAK_AI_Android_v1.0.0.apk             HIRAK_AI_Android_v1.0.0.sha256             --repo "${{ github.repository }}"             --title "HIRAK AI Android v1.0.0"             --notes "Installable Android APK built from the HIRAK AI Production Foundation v1.0.0."
+        run: gh release create hirak-ai-v1.0.0 HIRAK_AI_Android_v1.0.0.apk HIRAK_AI_Android_v1.0.0.sha256 --repo "${{ github.repository }}" --title "HIRAK AI Android v1.0.0" --notes "Installable Android APK built from the HIRAK AI Production Foundation v1.0.0." --latest
