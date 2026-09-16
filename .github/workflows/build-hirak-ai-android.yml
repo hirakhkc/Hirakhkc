@@ -1,0 +1,86 @@
+name: Build HIRAK AI Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "HIRAK-AI/**"
+      - ".github/workflows/build-hirak-ai-android.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Restore HIRAK AI source
+        shell: bash
+        run: |
+          mkdir -p HIRAK-AI/build-source
+          base64 --decode HIRAK-AI/HIRAK_AI_Production_Foundation_v1.0.0.zip.b64 > HIRAK-AI/source.zip
+          unzip -q HIRAK-AI/source.zip -d HIRAK-AI/build-source
+          test -f HIRAK-AI/build-source/hirak-ai/package.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            HIRAK-AI/build-source/hirak-ai/package-lock.json
+            HIRAK-AI/build-source/hirak-ai/server/package-lock.json
+
+      - name: Install and test
+        working-directory: HIRAK-AI/build-source/hirak-ai
+        run: |
+          npm ci
+          npm --prefix server ci
+          npm run check
+          npm run android:sync
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
+      - name: Build installable APK
+        working-directory: HIRAK-AI/build-source/hirak-ai/android
+        run: |
+          gradle --no-daemon clean assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk ../../../../../HIRAK_AI_Android_v1.0.0.apk
+
+      - name: Verify APK
+        shell: bash
+        run: |
+          test -s HIRAK_AI_Android_v1.0.0.apk
+          "${ANDROID_HOME}/build-tools/36.0.0/apksigner" verify --verbose HIRAK_AI_Android_v1.0.0.apk
+          sha256sum HIRAK_AI_Android_v1.0.0.apk > HIRAK_AI_Android_v1.0.0.sha256
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HIRAK-AI-Android-v1.0.0
+          path: |
+            HIRAK_AI_Android_v1.0.0.apk
+            HIRAK_AI_Android_v1.0.0.sha256
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Publish downloadable GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete hirak-ai-v1.0.0 --yes --cleanup-tag || true
+          gh release create hirak-ai-v1.0.0             HIRAK_AI_Android_v1.0.0.apk             HIRAK_AI_Android_v1.0.0.sha256             --repo "${{ github.repository }}"             --title "HIRAK AI Android v1.0.0"             --notes "Installable Android APK built from the HIRAK AI Production Foundation v1.0.0."
