@@ -1,6 +1,6 @@
 {
   "name": "hirak-jyotish-chakra",
-  "version": "3.2.0",
+  "version": "3.5.0",
   "description": "Hirak Jyotish Chakra for Windows 10 and later",
   "author": "Hirak Chatterjee",
   "main": "main.js",
@@ -19,14 +19,15 @@
     "win": {
       "target": [{"target": "nsis", "arch": ["x64"]}],
       "signAndEditExecutable": false,
-      "artifactName": "Hirak_Jyotish_Chakra_Windows_Setup_v3.2.0.${ext}"
+      "artifactName": "Hirak_Jyotish_Chakra_Windows_Setup_v3.5.0.${ext}"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Hirak Jyotish Chakra"
+      "shortcutName": "Hirak Jyotish Chakra",
+      "deleteAppDataOnUninstall": true
     }
   }
 }

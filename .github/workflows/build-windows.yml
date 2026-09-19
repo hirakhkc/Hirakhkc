@@ -2,7 +2,7 @@ name: Build Windows Offline EXE
 
 on:
   push:
-    branches: [main]
+    branches: [main, build-v3.5.0]
     paths:
       - "windows/**"
       - ".github/workflows/build-windows.yml"
@@ -39,7 +39,7 @@ jobs:
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
-          name: Hirak-Jyotish-Chakra-Windows-v3.2.0-EXE
-          path: windows/dist/Hirak_Jyotish_Chakra_Windows_Setup_v3.2.0.exe
+          name: Hirak-Jyotish-Chakra-Windows-v3.5.0-EXE
+          path: windows/dist/Hirak_Jyotish_Chakra_Windows_Setup_v3.5.0.exe
           if-no-files-found: error
           retention-days: 90
